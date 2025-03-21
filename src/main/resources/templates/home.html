@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .nav-links {
+            margin: 20px 0;
+        }
+        .nav-links a {
+            display: inline-block;
+            margin-right: 10px;
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .nav-links a:hover {
+            background-color: #0056b3;
+        }
+        .welcome-message {
+            margin-top: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>欢迎来到主页</h1>
+        <p>您已成功登录！</p>
+        
+        <div class="welcome-message">
+            <div sec:authorize="isAuthenticated()">
+                欢迎，<span sec:authentication="name"></span>！
+                <p>您的角色是：<span sec:authentication="principal.authorities"></span></p>
+            </div>
+        </div>
+        
+        <div class="nav-links">
+            <div sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/admin/dashboard}">管理员仪表板</a>
+                <a th:href="@{/admin}">管理员API</a>
+            </div>
+            <div sec:authorize="hasRole('USER')">
+                <a th:href="@{/user/dashboard}">用户仪表板</a>
+                <a th:href="@{/user}">用户API</a>
+            </div>
+            <a th:href="@{/logout}">登出</a>
+        </div>
+    </div>
+</body>
+</html>
